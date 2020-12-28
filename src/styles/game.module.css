@@ -4,10 +4,44 @@
   flex-direction: column;
 }
 .content {
-  flex: 1 0 auto;
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .footer {
   flex-shrink: 0;
   padding: 10px;
+}
+
+.correctAnswer {
+  background-color: green;
+}
+
+.neutralStatus {
+  background-color: cadetblue;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.wrongAnswer {
+  background-color: red;
+  -webkit-animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }

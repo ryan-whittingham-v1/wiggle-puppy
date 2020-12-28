@@ -1,83 +1,140 @@
-import React, { useState } from 'react';
-import { Button, Header, Input, Message } from 'semantic-ui-react'
+import React from 'react';
+import Start from './Start';
+import Animation from './Animation';
+import Answer from './Answer';
+import QuestionPrompt from './QuestionPrompt';
+import Settings from './Settings';
 
-import Settings from './Settings'
-import styles from '../styles/game.module.css'
-
-function Game(){
-    const [settings, setSettings] = useState({
-        multiplication: true,
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      operations: {
+        multiply: true,
         division: true,
         addition: true,
-        subtraction: true
-    });
+        subtraction: true,
+      },
+      range: {
+        low: 1,
+        high: 10,
+      },
+      running: false,
+      settingsStatus: false,
+      answer: null,
+      userAnswer: 3,
+      question: null,
+      meter: 10,
+    };
+  }
 
-    const [question, setQuestion] = useState("")
-    const [answer, setAnswer] = useState(0)
+  handleStartButton = () => {
+    this.setState((prevState) => ({
+      running: !prevState.running,
+    }));
+    this.getRandomQuestion();
+  };
 
-    function updateSettings(option){
-        setSettings({
-            ...settings,
-            [option]: (!settings[option])
-          })
-    }
+  handleSettingsButton = () => {
+    this.setState((prevState) => ({
+      settingsStatus: !prevState.settingsStatus,
+    }));
+  };
 
-    function generateExpression(){
-        const opperations = [];
-        for (const property in settings) {
-            if(settings[property]){
-                opperations.push(property);
-            }
-        }
-        const opperator = opperations[Math.floor(Math.random() * opperations.length)];
-        const numA = Math.floor(Math.random() * 11);
-        const numB = Math.ceil(Math.random() * 10);
-        setQuestion(numA +" "+ opperator +" " + numB);
-        switch(opperator) {
-            case "multiplication":
-              setAnswer(numA*numB);
-              break;
-            case "division":
-                setAnswer(numA/numB);
-              break;
-            case "addition":
-                setAnswer(numA+numB);
-              break;
-            case "subtraction":
-            setAnswer(numA-numB);
-            break;
-          }
-    }
-
-    let userAnswer = "";
-
-    function handleChange(e) {
-        userAnswer = parseInt(e);
-      }
-
-    function submitAnswer(){
-        console.log(userAnswer + " " + answer)
-        if(userAnswer === answer){
-            console.log("Correct!")
+  handleAnswerSubmit = (newAnswer) => {
+    this.setState(
+      {
+        userAnswer: newAnswer,
+      },
+      () => {
+        if (this.state.userAnswer === this.state.answer) {
+          this.setState((prevState) => ({
+            meter: prevState.meter + 1,
+          }));
         } else {
-            console.log("Wrong answer.")
+          this.setState((prevState) => ({
+            meter: prevState.meter - 1,
+          }));
         }
-    }
+        this.getRandomQuestion();
+      }
+    );
+  };
 
-    return(
-            <div className={styles.body}>
-                <div className={styles.content}>
-                <Header as='h1' textAlign='center'>Math Master</Header>
-                <Button onClick={generateExpression}>Start</Button>
-                <Message content={question}/>
-                <Input placeholder='Answer...' onChange={e => handleChange(e.target.value)}/>
-                <Button onClick={submitAnswer}>Submit</Button>
-                </div>
-                <div className={styles.footer}>
-                <Settings settings={settings} onClick={updateSettings}/>
-                </div>
-            </div>
-    )
+  getRandomQuestion = () => {
+    const numA = Math.floor(
+      Math.random() *
+        (this.state.range.high - this.state.range.low + this.state.range.low)
+    );
+    const numB = Math.floor(
+      Math.random() *
+        (this.state.range.high - this.state.range.low + this.state.range.low)
+    );
+
+    const availableOperations = [];
+    for (const operation in this.state.operations) {
+      if (this.state.operations[operation]) {
+        availableOperations.push(operation);
+      }
+    }
+    const operator =
+      availableOperations[
+        Math.floor(Math.random() * availableOperations.length)
+      ];
+
+    console.log(operator);
+
+    switch (operator) {
+      case 'multiply':
+        this.setState({
+          answer: numA * numB,
+          question: `${numA} * ${numB}`,
+        });
+        break;
+      case 'division':
+        this.setState({
+          answer: numA / numB,
+          question: `${numA} / ${numB}`,
+        });
+        break;
+      case 'addition':
+        this.setState({
+          answer: numA + numB,
+          question: `${numA} + ${numB}`,
+        });
+        break;
+      case 'subtraction':
+        this.setState({
+          answer: numA - numB,
+          question: `${numA} - ${numB}`,
+        });
+        break;
+      default:
+        console.log('switch error');
+    }
+  };
+
+  render() {
+    let animation = null;
+    if (this.state.running) {
+      animation = <Animation meter={this.state.meter} />;
+    }
+    return (
+      <React.Fragment>
+        <Settings
+          handleClick={this.handleSettingsButton}
+          open={this.state.settingsStatus}
+        />
+        <Start
+          handleClick={this.handleStartButton}
+          gameRunning={this.state.running}
+        />
+        {animation}
+        <QuestionPrompt text={this.state.question} />
+        <Answer onSubmit={this.handleAnswerSubmit} />
+      </React.Fragment>
+    );
+  }
 }
 
 export default Game;

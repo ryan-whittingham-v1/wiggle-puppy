@@ -1,8 +1,14 @@
-import Game from './components/Game'
+import React from 'react';
+
+import Game from './components/Game';
+import Header from './components/Header';
 
 function App() {
   return (
-   <Game/>
+    <React.Fragment>
+      <Header />
+      <Game />
+    </React.Fragment>
   );
 }
 
