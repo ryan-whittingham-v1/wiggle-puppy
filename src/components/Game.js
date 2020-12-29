@@ -48,15 +48,19 @@ class Game extends React.Component {
       },
       () => {
         if (this.state.userAnswer === this.state.answer) {
-          this.setState((prevState) => ({
-            meter: prevState.meter + 1,
-          }));
+          if (this.state.meter < 10) {
+            this.setState((prevState) => ({
+              meter: prevState.meter + 1,
+            }));
+          }
+          this.getRandomQuestion();
         } else {
-          this.setState((prevState) => ({
-            meter: prevState.meter - 1,
-          }));
+          if (this.state.meter > 0) {
+            this.setState((prevState) => ({
+              meter: prevState.meter - 1,
+            }));
+          }
         }
-        this.getRandomQuestion();
       }
     );
   };
@@ -81,8 +85,6 @@ class Game extends React.Component {
       availableOperations[
         Math.floor(Math.random() * availableOperations.length)
       ];
-
-    console.log(operator);
 
     switch (operator) {
       case 'multiply':
@@ -115,10 +117,16 @@ class Game extends React.Component {
   };
 
   render() {
+    let question = null;
     let animation = null;
+    let answerInput = null;
+
     if (this.state.running) {
+      question = <QuestionPrompt text={this.state.question} />;
       animation = <Animation meter={this.state.meter} />;
+      answerInput = <Answer onSubmit={this.handleAnswerSubmit} />;
     }
+
     return (
       <React.Fragment>
         <Settings
@@ -130,8 +138,8 @@ class Game extends React.Component {
           gameRunning={this.state.running}
         />
         {animation}
-        <QuestionPrompt text={this.state.question} />
-        <Answer onSubmit={this.handleAnswerSubmit} />
+        {question}
+        {answerInput}
       </React.Fragment>
     );
   }
