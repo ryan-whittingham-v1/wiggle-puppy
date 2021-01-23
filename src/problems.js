@@ -365,7 +365,7 @@ export const problems = [
   },
   {
     question: '6 / 6',
-    answer: 6,
+    answer: 1,
   },
   {
     question: '7 / 1',
