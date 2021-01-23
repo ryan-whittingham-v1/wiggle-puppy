@@ -1,0 +1,16 @@
+.container {
+  padding: 30px;
+  font-weight: bold;
+  font-size: calc(35px + 2vw);
+}
+
+.header1 {
+  position: fixed;
+  top: 5%;
+}
+
+.header2 {
+  position: fixed;
+  top: 13%;
+  left: 10%;
+}

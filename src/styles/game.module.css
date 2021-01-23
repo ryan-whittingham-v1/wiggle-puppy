@@ -1,47 +1,39 @@
-.body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.content {
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.footer {
-  flex-shrink: 0;
-  padding: 10px;
+.animation {
+  position: fixed;
+  top: 17%;
 }
 
-.correctAnswer {
-  background-color: green;
+.question {
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, 0%);
+}
+.answerInput {
+  position: fixed;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, 0%);
 }
 
-.neutralStatus {
-  background-color: cadetblue;
+.startButton {
+  position: fixed;
+  top: 80%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
 }
 
-@-webkit-keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.message {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc(16px + 2vw);
 }
 
-.wrongAnswer {
-  background-color: red;
-  -webkit-animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  animation: fade-in 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+.time {
+  position: fixed;
+  top: 5%;
+  right: 2%;
 }

@@ -1,0 +1,5 @@
+.input {
+  text-align: right;
+  font-size: calc(30px + 2vw);
+  width: calc(100px + 5vw);
+}
